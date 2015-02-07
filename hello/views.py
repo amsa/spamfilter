@@ -1,19 +1,28 @@
 from django.shortcuts import render
+from django.shortcuts import render
 from django.http import HttpResponse
+from django.core.cache import cache
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 from .models import Greeting
 
+from lib.classifier import Classifier
+
 # Create your views here.
+
+@csrf_exempt
 def index(request):
-    return HttpResponse('Hello from Python!')
+    if 'text' not in request.POST:
+        return HttpResponse(json.dumps([]), content_type='application/json')
 
-
-def db(request):
-
-    greeting = Greeting()
-    greeting.save()
-
-    greetings = Greeting.objects.all()
-
-    return render(request, 'db.html', {'greetings': greetings})
+    clf = cache.get('clf')
+    if clf == None:
+        clf = Classifier()
+        # cache the classifier
+        cache.set('clf', clf)
+    
+    emails = request.POST.getlist('text')
+    response = clf.classify(emails)
+    return HttpResponse(json.dumps(response), content_type='application/json')
 
