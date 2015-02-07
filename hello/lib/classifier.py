@@ -33,20 +33,8 @@ class Classifier:
 
     def classify(self, emails):
         """ Classify the list of emails and assign the predicted labels (e.g. spam or ham) to each one of them """
-        return [self.target_names[cat] for msg, cat in zip(emails, self.classifier.predict(emails))]
-
-class Cache:
-    CACHE_FILE = os.path.dirname(os.path.abspath(__file__)) + '/clf.pickle'
-
-    def get_classifier(self):
-        if os.path.exists(self.CACHE_FILE):
-            with open(self.CACHE_FILE, 'r') as f:
-                clf = pickle.load(f)
-        else:
-            clf = Classifier()
-            with open(self.CACHE_FILE, 'w') as f:
-                pickle.dump(clf, f)
-        return clf
+        result_dict = {'spam': 1, 'ham': 0}
+        return [result_dict[self.target_names[cat]] for msg, cat in zip(emails, self.classifier.predict(emails))]
 
 if __name__ == '__main__':
     clf = Classifier()
