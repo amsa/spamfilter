@@ -1,12 +1,22 @@
-# python-getting-started
+# Spam Filter
 
-A barebones Python app, which can easily be deployed to Heroku.
+This is a simple spam detection API implemented using Django which can easily be deployed to Heroku.
 
-This application support the [Getting Started with Python on Heroku](https://devcenter.heroku.com/articles/getting-started-with-python) article - check it out.
+This way a list of messages is passed to the endpoint, and you will get a list back 
+in the same order. Each value in the returned list is either 1 if the corresponding 
+text is spam and 0 otherwise.
+
+Sample:
+```sh
+curl -X POST -d 'text=EMAIL_BODY1&text=EMAIL_BODY2' http://127.0.0.1:5000/
+```
+
+Output:
+```
+[0, 1] # it means EMAIL_BODY1 is not a spam, but EMAIL_BODY2 is spam
+```
 
 ## Running Locally
-
-Make sure you have Python [installed properly](http://install.python-guide.org).  Also, install the [Heroku Toolbelt](https://toolbelt.heroku.com/).
 
 ```sh
 $ git clone git@github.com:heroku/python-getting-started.git
@@ -15,13 +25,12 @@ $ pip install -r requirements.txt
 $ python manage.py syncdb
 $ foreman start web
 ```
-
 Your app should now be running on [localhost:5000](http://localhost:5000/).
 
 ## Deploying to Heroku
 
 ```sh
-$ heroku create
+$ heroku create --buildpack https://github.com/thenovices/heroku-buildpack-scipy
 $ git push heroku master
 $ heroku run python manage.py syncdb
 $ heroku open
