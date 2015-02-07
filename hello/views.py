@@ -9,8 +9,6 @@ from .models import Greeting
 
 from lib.classifier import Classifier
 
-# Create your views here.
-
 @csrf_exempt
 def index(request):
     if 'text' not in request.POST:
