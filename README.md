@@ -2,9 +2,8 @@
 
 This is a simple spam detection API implemented using Django which can easily be deployed to Heroku.
 
-This way a list of messages is passed to the endpoint, and you will get a list back 
-in the same order. Each value in the returned list is either 1 if the corresponding 
-text is spam and 0 otherwise.
+The API accepts an array of texts as input, and returns an array back 
+in the same order with values being either 1 for spam or 0 for ham.
 
 Sample:
 ```sh
